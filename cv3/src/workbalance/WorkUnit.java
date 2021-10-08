@@ -12,5 +12,9 @@ public interface WorkUnit {
 
     int getCurrentWorkload();
 
+    void updateWorkerWithLowestWorkload();
+
+    void setParent(WorkUnit parent);
+
     WorkUnit getWorkerWithLowestWorkload();
 }

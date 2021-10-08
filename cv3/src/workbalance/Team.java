@@ -1,20 +1,12 @@
 package workbalance;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
-public class Team implements WorkUnit {
-    private final LinkedList<WorkUnit> teamMebers = new LinkedList<>();
+public class Team extends AbstractWorkUnit implements WorkUnit {
+    private final LinkedList<WorkUnit> teamMembers = new LinkedList<>();
     private final String name;
     private WorkUnit workerWithLowestWorkload = null;
-
-    public Team(String name, List<WorkUnit> teamMembers){
-        this.name = name;
-        for(WorkUnit wu : teamMembers){
-            this.teamMebers.add(wu);
-        }
-    }
 
     public Team(String name){
         this.name = name;
@@ -22,7 +14,11 @@ public class Team implements WorkUnit {
 
     @Override
     public void addMember(WorkUnit w){
-        teamMebers.add(w);
+        teamMembers.add(w);
+        if (workerWithLowestWorkload == null)
+            workerWithLowestWorkload = w;
+        else
+            updateWorkerWithLowestWorkload();
     }
 
     @Override
@@ -33,7 +29,7 @@ public class Team implements WorkUnit {
 
     @Override
     public int getCurrentWorkload() {
-        return teamMebers
+        return teamMembers
                 .stream()
                 .mapToInt(WorkUnit::getCurrentWorkload)
                 .sum();
@@ -41,35 +37,32 @@ public class Team implements WorkUnit {
 
     @Override
     public WorkUnit getWorkerWithLowestWorkload() {
-        if (workerWithLowestWorkload != null)
-            return workerWithLowestWorkload;
+        return workerWithLowestWorkload;
+    }
 
+    public void updateWorkerWithLowestWorkload() {
         int minLoad = Integer.MAX_VALUE;
-        WorkUnit leastLoaded = null;
-        for (WorkUnit member : teamMebers){
+        for (WorkUnit member : teamMembers){
             WorkUnit w = member.getWorkerWithLowestWorkload();
             if (w.getCurrentWorkload() < minLoad){
                 minLoad = w.getCurrentWorkload();
-                leastLoaded = w;
+                workerWithLowestWorkload = w;
             }
         }
-        return leastLoaded;
+        if (parent != null)
+            parent.updateWorkerWithLowestWorkload();
     }
 
     @Override
     public int getSalary() {
-        return teamMebers
+        return teamMembers
                 .stream()
                 .mapToInt(WorkUnit::getSalary)
                 .sum();
     }
 
     @Override
-    public String repr() {
-        return repr(6);
-    }
-
-    private String repr(int offset){
+    public String repr(){
         StringBuilder sb = new StringBuilder();
         sb.append(name);
         sb.append(" (salary: ");
@@ -77,13 +70,11 @@ public class Team implements WorkUnit {
         sb.append(", workload: ");
         sb.append(getCurrentWorkload());
         sb.append(")");
-        for (WorkUnit w: teamMebers){
+        for (WorkUnit w: teamMembers){
             Scanner sc = new Scanner(w.repr());
             while (sc.hasNext()){
                 sb.append("\n");
-                for (int i = 0; i < offset; i++) {
-                    sb.append(' ');
-                }
+                sb.append(" ".repeat(6));
                 sb.append(sc.nextLine());
             }
         }

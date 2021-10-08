@@ -1,8 +1,8 @@
 package workbalance;
 
-public class Worker implements WorkUnit {
-    private int salary;
-    private String name;
+public class Worker extends AbstractWorkUnit implements WorkUnit {
+    private final int salary;
+    private final String name;
     private int workLoad = 0;
 
     public Worker(String name, int salary){
@@ -28,11 +28,18 @@ public class Worker implements WorkUnit {
     @Override
     public void addWorkload(int amount) {
         workLoad += amount;
+        if (parent != null)
+            parent.updateWorkerWithLowestWorkload();
     }
 
     @Override
     public int getCurrentWorkload() {
         return workLoad;
+    }
+
+    @Override
+    public void updateWorkerWithLowestWorkload() {
+
     }
 
     @Override
