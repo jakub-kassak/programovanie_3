@@ -66,15 +66,15 @@ public class Team implements WorkUnit {
 
     @Override
     public String repr() {
-        return repr(4);
+        return repr(6);
     }
 
     private String repr(int offset){
         StringBuilder sb = new StringBuilder();
         sb.append(name);
-        sb.append(" (total salary: ");
+        sb.append(" (salary: ");
         sb.append(getSalary());
-        sb.append(", total workload: ");
+        sb.append(", workload: ");
         sb.append(getCurrentWorkload());
         sb.append(")");
         for (WorkUnit w: teamMebers){
