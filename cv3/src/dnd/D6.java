@@ -1,6 +1,8 @@
 package dnd;
 
+
 public class D6 implements NDie{
+
     private MyRandom rndStrategy ;
 
     public D6(){
