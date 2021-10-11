@@ -21,25 +21,9 @@ public class MyOrganization {
     }
 
     public static void main(String[] args) {
-        /* WorkUnit myOrg = new Team("MyOrg");
-        for (int i = 1; i < 5; i++) {
-            String teamName = "Team_" + i;
-            WorkUnit team = new Team(teamName);
-            for (int j = 10; j <= 30; j += 10) {
-                String memberName = "Member_" + i + "-" + j;
-                WorkUnit member = new Worker(memberName, 10 * i * j);
-                member.addWorkload(rnd.nextInt(2));
-                team.addMember(member);
-                member.setParent(team);
-            }
-            myOrg.addMember(team);
-            team.setParent(myOrg);
-        }
-
-         */
         WorkUnit myOrg = new Team("MyOrg");
-        myOrg.addMember(generateTree(10, "Technology", myOrg));
-        myOrg.addMember(generateTree(10, "Business", myOrg));
+        myOrg.addMember(generateTree(15, "Technology", myOrg));
+        myOrg.addMember(generateTree(15, "Business", myOrg));
 
         System.out.println(myOrg.repr() + "\n");
 
