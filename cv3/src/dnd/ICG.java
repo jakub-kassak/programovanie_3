@@ -31,16 +31,16 @@ public class ICG implements MyRandom{
 
     private BigInteger pow(BigInteger a, BigInteger n){
         initTable(a);
-        return count(a, n);
+        return count(n);
     }
 
-    private BigInteger count(BigInteger a, BigInteger n){
+    private BigInteger count(BigInteger n){
         if (table.containsKey(n)) {
             return table.get(n);
         }
         BigInteger[] half = n.divideAndRemainder(BigInteger.TWO);
-        BigInteger b = count(a, half[0]);
-        BigInteger c = count(a, half[0].add(half[1]));
+        BigInteger b = count(half[0]);
+        BigInteger c = count(half[0].add(half[1]));
         BigInteger ret = b.multiply(c);
         table.put(n, ret);
         return ret;
