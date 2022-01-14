@@ -25,4 +25,9 @@ public class InternalNode implements TreeNode {
     public TreeNode getRightChild() {
         return right;
     }
+
+    @Override
+    public String toString() {
+        return "InternalNode{" + left.getId() + ", " + id + ", " + right.getId() + '}';
+    }
 }
